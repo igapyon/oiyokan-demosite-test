@@ -6,8 +6,8 @@ import org.apache.olingo.client.api.communication.request.retrieve.ODataEntitySe
 import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse;
 import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientEntitySet;
+import org.apache.olingo.client.api.domain.ClientPrimitiveValue;
 import org.apache.olingo.client.api.domain.ClientProperty;
-import org.apache.olingo.commons.api.format.ContentType;
 import org.junit.jupiter.api.Test;
 
 public class ReadEntityCollection01Test {
@@ -19,17 +19,20 @@ public class ReadEntityCollection01Test {
                 .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
                         .appendEntitySetSegment("ODataTests1") //
                         .count(true) //
-                        .select("ID,Name") //
+                        .select("ID,Name,DateTimeOffset1") //
                         .filter("ID le 4") //
                         .orderBy("ID") //
                         .build());
+        request.setAccept("application/json;odata.metadata=full");
 
         final ODataRetrieveResponse<ClientEntitySet> response = request.execute();
         final ClientEntitySet entitySet = response.getBody();
         log.info("    count: " + entitySet.getCount());
         for (ClientEntity entity : entitySet.getEntities()) {
+            log.info("  " + "ODataTest1");
             for (ClientProperty property : entity.getProperties()) {
-                log.info("    " + property.getName() + ": " + property.getValue());
+                ClientPrimitiveValue priValue = property.getPrimitiveValue();
+                log.info("    " + property.getName() + " (" + priValue.getType() + ")" + ": " + property.getValue());
             }
         }
     }

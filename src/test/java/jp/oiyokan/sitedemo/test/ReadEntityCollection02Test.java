@@ -19,10 +19,11 @@ public class ReadEntityCollection02Test {
                 .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
                         .appendEntitySetSegment("ODataTests1") //
                         .count(true) //
-                        .select("ID,Name") //
+                        .select("ID,Name,DateTimeOffset1") //
                         .filter("ID ge 200") //
                         .orderBy("ID desc") //
                         .build());
+        request.setAccept("application/json;odata.metadata=full");
 
         final ODataRetrieveResponse<ClientEntitySet> response = request.execute();
         final ClientEntitySet entitySet = response.getBody();

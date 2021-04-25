@@ -7,7 +7,6 @@ import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse
 import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientPrimitiveValue;
 import org.apache.olingo.client.api.domain.ClientProperty;
-import org.apache.olingo.commons.api.format.ContentType;
 import org.junit.jupiter.api.Test;
 
 public class ReadEntityOne01Test {
@@ -20,17 +19,14 @@ public class ReadEntityOne01Test {
                         .appendEntitySetSegment("ODataTests1") //
                         .appendKeySegment(1) //
                         .build());
+        request.setAccept("application/json;odata.metadata=full");
 
         final ODataRetrieveResponse<ClientEntity> response = request.execute();
         final ClientEntity entity = response.getBody();
 
         for (ClientProperty property : entity.getProperties()) {
-            log.info("    " + property.getName() + ": " + property.getValue());
-            @SuppressWarnings("unused")
             ClientPrimitiveValue priValue = property.getPrimitiveValue();
-            // log.info(" " + priValue.getTypeKind());
-            log.info("      type: " + priValue.getType());
-            log.info("      priVal: " + property.getPrimitiveValue());
+            log.info("    " + property.getName() + " (" + priValue.getType() + ")" + ": " + property.getValue());
         }
     }
 
