@@ -14,8 +14,7 @@ public class ReadEdmAll01Test {
 
     @Test
     void test01() {
-        final Edm edm = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
-                .getMetadataRequest(SitedemoTestUtil.serviceUrl).execute().getBody();
+        final Edm edm = SitedemoTestUtil.getEdm();
         for (EdmEntitySet entitySet : edm.getEntityContainer().getEntitySets()) {
             log.info("EdmEntitySet: " + entitySet.getName());
 

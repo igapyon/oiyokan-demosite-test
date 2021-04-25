@@ -15,8 +15,6 @@ public class ReadEntityOne01Test {
 
     @Test
     void test01() {
-        SitedemoTestUtil.getClient().getConfiguration().setDefaultPubFormat(ContentType.APPLICATION_JSON);
-
         ODataEntityRequest<ClientEntity> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
                 .getEntityRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
                         .appendEntitySetSegment("ODataTests1") //

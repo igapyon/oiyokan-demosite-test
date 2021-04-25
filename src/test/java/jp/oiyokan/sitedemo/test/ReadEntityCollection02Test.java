@@ -6,12 +6,12 @@ import org.apache.olingo.client.api.communication.request.retrieve.ODataEntitySe
 import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse;
 import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientEntitySet;
+import org.apache.olingo.client.api.domain.ClientPrimitiveValue;
 import org.apache.olingo.client.api.domain.ClientProperty;
-import org.apache.olingo.commons.api.format.ContentType;
 import org.junit.jupiter.api.Test;
 
-public class ReadEntityCollection01Test {
-    private static final Log log = LogFactory.getLog(ReadEntityCollection01Test.class);
+public class ReadEntityCollection02Test {
+    private static final Log log = LogFactory.getLog(ReadEntityCollection02Test.class);
 
     @Test
     void test01() {
@@ -19,17 +19,19 @@ public class ReadEntityCollection01Test {
                 .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
                         .appendEntitySetSegment("ODataTests1") //
                         .count(true) //
-                        .select("ID") //
-                        .filter("ID le 4") //
-                        .orderBy("ID") //
+                        .select("ID,Name") //
+                        .filter("ID ge 200") //
+                        .orderBy("ID desc") //
                         .build());
 
         final ODataRetrieveResponse<ClientEntitySet> response = request.execute();
         final ClientEntitySet entitySet = response.getBody();
         log.info("    count: " + entitySet.getCount());
         for (ClientEntity entity : entitySet.getEntities()) {
+            log.info("  " + "ODataTest1");
             for (ClientProperty property : entity.getProperties()) {
-                log.info("    " + property.getName() + ": " + property.getValue());
+                ClientPrimitiveValue priValue = property.getPrimitiveValue();
+                log.info("    " + property.getName() + " (" + priValue.getType() + ")" + ": " + property.getValue());
             }
         }
     }
