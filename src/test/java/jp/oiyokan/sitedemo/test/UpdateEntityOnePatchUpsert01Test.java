@@ -17,7 +17,7 @@ public class UpdateEntityOnePatchUpsert01Test {
         properties.add(SitedemoTestUtil.getClient().getObjectFactory().newPrimitiveProperty("Name", SitedemoTestUtil
                 .getClient().getObjectFactory().newPrimitiveValueBuilder().buildString("Updated valu555")));
 
-        SitedemoTestUtil.patchUpsertEntryOne("ODataTests7", Integer.valueOf(5020), properties);
+        SitedemoTestUtil.patchUpsertEntryOne("ODataTests7", Integer.valueOf(50201), properties);
         log.info("UPSERT成功");
     }
 }

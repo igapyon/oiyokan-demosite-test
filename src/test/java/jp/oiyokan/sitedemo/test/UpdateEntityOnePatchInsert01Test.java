@@ -18,12 +18,12 @@ public class UpdateEntityOnePatchInsert01Test {
         properties.add(SitedemoTestUtil.getClient().getObjectFactory().newPrimitiveProperty("Name", SitedemoTestUtil
                 .getClient().getObjectFactory().newPrimitiveValueBuilder().buildString("Updated valu555")));
 
-        final boolean isInserted = SitedemoTestUtil.patchInsertEntryOne("ODataTests7", Integer.valueOf(503),
+        final boolean isInserted = SitedemoTestUtil.patchInsertEntryOne("ODataTests7", Integer.valueOf(50111),
                 properties);
         if (isInserted) {
             log.info("patch insert success.");
         } else {
-            log.info("patch insert fail. no record deleted.");
+            log.warn("patch insert fail. no record deleted.");
         }
 
     }

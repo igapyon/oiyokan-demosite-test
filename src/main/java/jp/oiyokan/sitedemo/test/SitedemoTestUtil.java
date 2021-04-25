@@ -142,21 +142,19 @@ public class SitedemoTestUtil {
             entity.getProperties().add(prop);
         }
 
-        final ODataEntityUpdateRequest<ClientEntity> requestUpdate = SitedemoTestUtil.getClient().getCUDRequestFactory()
+        final ODataEntityUpdateRequest<ClientEntity> request = SitedemoTestUtil.getClient().getCUDRequestFactory()
                 .getEntityUpdateRequest(uri, UpdateType.PATCH, entity);
         // INSERT限定
-        requestUpdate.setIfNoneMatch("*");
+        request.setIfNoneMatch("*");
         try {
-            @SuppressWarnings("unused")
-            final ODataEntityUpdateResponse<ClientEntity> responseInsert = requestUpdate.execute();
-            return true;
-        } catch (ODataClientErrorException ex) {
-            if (ex.getStatusLine().getStatusCode() == 304) {
+            final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
+            if (response.getStatusCode() == 304) {
                 return false;
             } else {
-                log.error("想定しない戻り値。期待は 304: " + ex.getStatusLine().getStatusCode());
-                throw ex;
+                return true;
             }
+        } catch (ODataClientErrorException ex) {
+            throw ex;
         }
     }
 
@@ -176,21 +174,19 @@ public class SitedemoTestUtil {
             entity.getProperties().add(prop);
         }
 
-        final ODataEntityUpdateRequest<ClientEntity> requestUpdate = SitedemoTestUtil.getClient().getCUDRequestFactory()
+        final ODataEntityUpdateRequest<ClientEntity> request = SitedemoTestUtil.getClient().getCUDRequestFactory()
                 .getEntityUpdateRequest(uri, UpdateType.PATCH, entity);
         // UPDATE限定
-        requestUpdate.setIfMatch("*");
+        request.setIfMatch("*");
         try {
-            @SuppressWarnings("unused")
-            final ODataEntityUpdateResponse<ClientEntity> responseInsert = requestUpdate.execute();
-            return true;
-        } catch (ODataClientErrorException ex) {
-            if (ex.getStatusLine().getStatusCode() == 304) {
+            final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
+            if (response.getStatusCode() == 304) {
                 return false;
             } else {
-                log.error("想定しない戻り値。期待は 304: " + ex.getStatusLine().getStatusCode());
-                throw ex;
+                return true;
             }
+        } catch (ODataClientErrorException ex) {
+            throw ex;
         }
     }
 
@@ -210,20 +206,18 @@ public class SitedemoTestUtil {
             entity.getProperties().add(prop);
         }
 
-        final ODataEntityUpdateRequest<ClientEntity> requestUpdate = SitedemoTestUtil.getClient().getCUDRequestFactory()
+        final ODataEntityUpdateRequest<ClientEntity> request = SitedemoTestUtil.getClient().getCUDRequestFactory()
                 .getEntityUpdateRequest(uri, UpdateType.PATCH, entity);
         // UPSERT (UPDATE or INSERT)
         try {
-            @SuppressWarnings("unused")
-            final ODataEntityUpdateResponse<ClientEntity> responseInsert = requestUpdate.execute();
-            return true;
-        } catch (ODataClientErrorException ex) {
-            if (ex.getStatusLine().getStatusCode() == 304) {
+            final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
+            if (response.getStatusCode() == 304) {
                 return false;
             } else {
-                log.error("想定しない戻り値。期待は 304: " + ex.getStatusLine().getStatusCode());
-                throw ex;
+                return true;
             }
+        } catch (ODataClientErrorException ex) {
+            throw ex;
         }
     }
 }
