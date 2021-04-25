@@ -15,7 +15,7 @@ public class ReadEntityOne01Test {
     @Test
     void test01() {
         ODataEntityRequest<ClientEntity> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
-                .getEntityRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
+                .getEntityRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                         .appendEntitySetSegment("ODataTests1") //
                         .appendKeySegment(1) //
                         .build());

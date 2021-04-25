@@ -13,8 +13,8 @@ public class DeleteEntityOneDelete01Test {
 
     @Test
     void test01() {
-        final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl)
-                .appendEntitySetSegment("ODataTests1").appendKeySegment(205).build();
+        final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
+                .appendEntitySetSegment("ODataTests1").appendKeySegment(215).build();
         final ODataDeleteRequest request = SitedemoTestUtil.getClient().getCUDRequestFactory().getDeleteRequest(uri);
         final ODataDeleteResponse response = request.execute();
         log.info("code:" + response.getStatusCode() + ": " + response.getStatusMessage());

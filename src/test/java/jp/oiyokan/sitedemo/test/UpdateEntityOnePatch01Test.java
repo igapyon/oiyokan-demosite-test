@@ -17,9 +17,9 @@ public class UpdateEntityOnePatch01Test {
 
     @Test
     void test01() {
-        final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
+        final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                 .appendEntitySetSegment("ODataTests1") //
-                .appendKeySegment(205) //
+                .appendKeySegment(213) //
                 .build();
 
         final ClientEntity entity = SitedemoTestUtil.getClient().getObjectFactory()

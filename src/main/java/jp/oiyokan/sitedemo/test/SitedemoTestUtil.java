@@ -8,26 +8,32 @@ import org.apache.olingo.commons.api.edm.Edm;
 import org.apache.olingo.commons.api.format.ContentType;
 
 public class SitedemoTestUtil {
-    @SuppressWarnings("unused")
     private static final Log log = LogFactory.getLog(SitedemoTestUtil.class);
 
-    public static final ODataClient client = ODataClientFactory.getClient();
+    private static volatile Edm edm = null;
+    private static volatile ODataClient client = null;
 
-    public static final String serviceUrl = "https://oiyokan-devel.herokuapp.com/odata4.svc/";
+    public static String getServiceUrl() {
+        return SitedemoTestConstants.serviceUrl;
+    }
 
     public static final ODataClient getClient() {
+        if (client == null) {
+            log.info("Start client instance:" + getServiceUrl());
+            client = ODataClientFactory.getClient();
+        }
         client.getConfiguration().setDefaultPubFormat(ContentType.APPLICATION_JSON);
+
         return client;
     }
 
-    private static volatile Edm edm = null;
-
     public static Edm getEdm() {
         if (edm == null) {
-            log.info("Start to retrieve EDM from site:" + serviceUrl);
+            log.info("Start retrieve EDM from site:" + getServiceUrl());
             edm = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
-                    .getMetadataRequest(SitedemoTestUtil.serviceUrl).execute().getBody();
+                    .getMetadataRequest(SitedemoTestUtil.getServiceUrl()).execute().getBody();
         }
+
         return edm;
     }
 }

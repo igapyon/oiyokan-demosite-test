@@ -16,7 +16,7 @@ public class ReadEntityCollection02Test {
     @Test
     void test01() {
         ODataEntitySetRequest<ClientEntitySet> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
-                .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
+                .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                         .appendEntitySetSegment("ODataTests1") //
                         .count(true) //
                         .select("ID,Name,DateTimeOffset1") //
