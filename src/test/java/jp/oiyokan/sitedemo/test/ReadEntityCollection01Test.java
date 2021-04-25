@@ -19,7 +19,7 @@ public class ReadEntityCollection01Test {
                 .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl) //
                         .appendEntitySetSegment("ODataTests1") //
                         .count(true) //
-                        .select("ID") //
+                        .select("ID,Name") //
                         .filter("ID le 4") //
                         .orderBy("ID") //
                         .build());
