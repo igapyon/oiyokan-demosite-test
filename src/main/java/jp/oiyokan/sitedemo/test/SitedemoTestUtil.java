@@ -8,11 +8,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.olingo.client.api.ODataClient;
 import org.apache.olingo.client.api.communication.ODataClientErrorException;
 import org.apache.olingo.client.api.communication.request.cud.ODataDeleteRequest;
+import org.apache.olingo.client.api.communication.request.cud.ODataEntityCreateRequest;
 import org.apache.olingo.client.api.communication.request.cud.ODataEntityUpdateRequest;
 import org.apache.olingo.client.api.communication.request.cud.UpdateType;
 import org.apache.olingo.client.api.communication.request.retrieve.ODataEntityRequest;
 import org.apache.olingo.client.api.communication.request.retrieve.ODataEntitySetRequest;
 import org.apache.olingo.client.api.communication.response.ODataDeleteResponse;
+import org.apache.olingo.client.api.communication.response.ODataEntityCreateResponse;
 import org.apache.olingo.client.api.communication.response.ODataEntityUpdateResponse;
 import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse;
 import org.apache.olingo.client.api.domain.ClientEntity;
@@ -52,6 +54,26 @@ public class SitedemoTestUtil {
         }
 
         return edm;
+    }
+
+    ////////////////
+    // Create
+
+    public static void createEntityOne(String entitySetName, final List<ClientProperty> properties) {
+        ClientEntity newEntity = SitedemoTestUtil.getClient().getObjectFactory()
+                .newEntity(new FullQualifiedName("Container", entitySetName));
+        for (ClientProperty prop : properties) {
+            newEntity.getProperties().add(prop);
+        }
+
+        final ODataEntityCreateRequest<ClientEntity> createRequest = SitedemoTestUtil.getClient().getCUDRequestFactory()
+                .getEntityCreateRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
+                        .appendEntitySetSegment(entitySetName).build(), newEntity);
+        final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
+        final ClientEntity createdEntity = createResponse.getBody();
+
+        log.info("  " + entitySetName);
+        SitedemoTestUtil.printEntity(createdEntity);
     }
 
     /////////////////
