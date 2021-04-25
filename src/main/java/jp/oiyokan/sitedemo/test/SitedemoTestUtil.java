@@ -1,10 +1,15 @@
 package jp.oiyokan.sitedemo.test;
 
+import java.net.URI;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.olingo.client.api.ODataClient;
+import org.apache.olingo.client.api.communication.ODataClientErrorException;
+import org.apache.olingo.client.api.communication.request.cud.ODataDeleteRequest;
 import org.apache.olingo.client.api.communication.request.retrieve.ODataEntityRequest;
 import org.apache.olingo.client.api.communication.request.retrieve.ODataEntitySetRequest;
+import org.apache.olingo.client.api.communication.response.ODataDeleteResponse;
 import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse;
 import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientEntitySet;
@@ -84,6 +89,9 @@ public class SitedemoTestUtil {
         }
     }
 
+    ///////////////
+    // Read common
+
     public static void printEntity(ClientEntity entity) {
         for (ClientProperty property : entity.getProperties()) {
             ClientPrimitiveValue priValue = property.getPrimitiveValue();
@@ -91,4 +99,22 @@ public class SitedemoTestUtil {
         }
     }
 
+    /////////////////
+    // Delete
+    public static boolean deleteEntryOne(String entitySetName, Object keySegment) {
+        final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
+                .appendEntitySetSegment(entitySetName).appendKeySegment(keySegment).build();
+        final ODataDeleteRequest request = SitedemoTestUtil.getClient().getCUDRequestFactory().getDeleteRequest(uri);
+        try {
+            final ODataDeleteResponse response = request.execute();
+            log.info("code:" + response.getStatusCode() + ": " + response.getStatusMessage());
+            return true;
+        } catch (ODataClientErrorException ex) {
+            if (ex.getStatusLine().getStatusCode() == 404) {
+                return false;
+            } else {
+                throw ex;
+            }
+        }
+    }
 }
