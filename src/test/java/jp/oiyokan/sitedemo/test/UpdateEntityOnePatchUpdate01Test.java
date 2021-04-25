@@ -17,11 +17,12 @@ public class UpdateEntityOnePatchUpdate01Test {
         properties.add(SitedemoTestUtil.getClient().getObjectFactory().newPrimitiveProperty("Name", SitedemoTestUtil
                 .getClient().getObjectFactory().newPrimitiveValueBuilder().buildString("Updated valu555")));
 
-        final boolean isUpdated = SitedemoTestUtil.patchUpdateEntryOne("ODataTests7", Integer.valueOf(503), properties);
+        final boolean isUpdated = SitedemoTestUtil.patchUpdateEntryOne("ODataTests7", Integer.valueOf(50321),
+                properties);
         if (isUpdated) {
             log.info("patch update success.");
         } else {
-            log.info("patch update fail. no record deleted.");
+            log.warn("patch update fail. no record deleted.");
         }
     }
 }

@@ -9,11 +9,11 @@ public class DeleteEntityOneDelete01Test {
 
     @Test
     void test01() {
-        final boolean isDeleted = SitedemoTestUtil.deleteEntryOne("ODataTests1", Integer.valueOf(211));
+        final boolean isDeleted = SitedemoTestUtil.deleteEntryOne("ODataTests7", Integer.valueOf(50201));
         if (isDeleted) {
             log.info("delete success.");
         } else {
-            log.info("delete fail. no record deleted.");
+            log.warn("delete fail. no record deleted.");
         }
     }
 }
