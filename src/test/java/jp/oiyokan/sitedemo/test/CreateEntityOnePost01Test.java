@@ -1,3 +1,4 @@
+
 package jp.oiyokan.sitedemo.test;
 
 import org.apache.commons.logging.Log;
@@ -22,7 +23,7 @@ public class CreateEntityOnePost01Test {
                         .getClient().getObjectFactory().newPrimitiveValueBuilder().buildString("Create Entity Test.")));
 
         final ODataEntityCreateRequest<ClientEntity> createRequest = SitedemoTestUtil.getClient().getCUDRequestFactory()
-                .getEntityCreateRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.serviceUrl)
+                .getEntityCreateRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
                         .appendEntitySetSegment("ODataTests1").build(), newEntity);
         final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
         final ClientEntity createdEntity = createResponse.getBody();
