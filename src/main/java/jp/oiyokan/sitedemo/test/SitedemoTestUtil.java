@@ -4,8 +4,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.olingo.client.api.ODataClient;
 import org.apache.olingo.client.api.communication.request.retrieve.ODataEntityRequest;
+import org.apache.olingo.client.api.communication.request.retrieve.ODataEntitySetRequest;
 import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse;
 import org.apache.olingo.client.api.domain.ClientEntity;
+import org.apache.olingo.client.api.domain.ClientEntitySet;
 import org.apache.olingo.client.api.domain.ClientPrimitiveValue;
 import org.apache.olingo.client.api.domain.ClientProperty;
 import org.apache.olingo.client.core.ODataClientFactory;
@@ -57,6 +59,29 @@ public class SitedemoTestUtil {
         final ClientEntity entity = response.getBody();
         log.info("  EntitySet: " + entitySetName);
         printEntity(entity);
+    }
+
+    public static void readEntityCollection(String entitySetName, boolean count, String select, String filter,
+            String orderBy, Integer top, Integer skip) {
+        ODataEntitySetRequest<ClientEntitySet> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
+                .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
+                        .appendEntitySetSegment(entitySetName) //
+                        .count(count) //
+                        .select(select) //
+                        .filter(filter) //
+                        .orderBy(orderBy) //
+                        .top(top) //
+                        .skip(skip) //
+                        .build());
+        request.setAccept("application/json;odata.metadata=full");
+
+        final ODataRetrieveResponse<ClientEntitySet> response = request.execute();
+        final ClientEntitySet entitySet = response.getBody();
+        log.info("    count: " + entitySet.getCount());
+        for (ClientEntity entity : entitySet.getEntities()) {
+            log.info("  " + entitySetName);
+            SitedemoTestUtil.printEntity(entity);
+        }
     }
 
     public static void printEntity(ClientEntity entity) {
