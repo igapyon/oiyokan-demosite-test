@@ -1,4 +1,3 @@
-
 package jp.oiyokan.sitedemo.test;
 
 import org.apache.commons.logging.Log;

@@ -1,11 +1,7 @@
 package jp.oiyokan.sitedemo.test;
 
-import java.net.URI;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.olingo.client.api.communication.request.cud.ODataDeleteRequest;
-import org.apache.olingo.client.api.communication.response.ODataDeleteResponse;
 import org.junit.jupiter.api.Test;
 
 public class DeleteEntityOneDelete01Test {
@@ -13,10 +9,11 @@ public class DeleteEntityOneDelete01Test {
 
     @Test
     void test01() {
-        final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
-                .appendEntitySetSegment("ODataTests1").appendKeySegment(215).build();
-        final ODataDeleteRequest request = SitedemoTestUtil.getClient().getCUDRequestFactory().getDeleteRequest(uri);
-        final ODataDeleteResponse response = request.execute();
-        log.info("code:" + response.getStatusCode() + ": " + response.getStatusMessage());
+        final boolean isDeleted = SitedemoTestUtil.deleteEntryOne("ODataTests1", Integer.valueOf(211));
+        if (isDeleted) {
+            log.info("delete success.");
+        } else {
+            log.info("delete fail. no record deleted.");
+        }
     }
 }
