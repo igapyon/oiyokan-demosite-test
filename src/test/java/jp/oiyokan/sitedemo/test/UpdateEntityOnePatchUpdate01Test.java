@@ -12,14 +12,17 @@ import org.apache.olingo.client.api.domain.ClientProperty;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.junit.jupiter.api.Test;
 
-public class UpdateEntityOnePatch01Test {
-    private static final Log log = LogFactory.getLog(UpdateEntityOnePatch01Test.class);
+public class UpdateEntityOnePatchUpdate01Test {
+    private static final Log log = LogFactory.getLog(UpdateEntityOnePatchUpdate01Test.class);
 
     @Test
     void test01() {
+        String entitySetName = "ODataTests7";
+        Object keySegment = Integer.valueOf(21312);
+
         final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
-                .appendEntitySetSegment("ODataTests1") //
-                .appendKeySegment(213) //
+                .appendEntitySetSegment(entitySetName) //
+                .appendKeySegment(keySegment) //
                 .build();
 
         final ClientEntity entity = SitedemoTestUtil.getClient().getObjectFactory()
