@@ -26,10 +26,12 @@ public class UpdateEntityOnePatch01Test {
                 .newEntity(new FullQualifiedName("Container", "ODataTests1"));
         entity.getProperties()
                 .add(SitedemoTestUtil.getClient().getObjectFactory().newPrimitiveProperty("Name", SitedemoTestUtil
-                        .getClient().getObjectFactory().newPrimitiveValueBuilder().buildString("Updated value")));
+                        .getClient().getObjectFactory().newPrimitiveValueBuilder().buildString("Updated value2")));
 
         final ODataEntityUpdateRequest<ClientEntity> requestUpdate = SitedemoTestUtil.getClient().getCUDRequestFactory()
                 .getEntityUpdateRequest(uri, UpdateType.PATCH, entity);
+        // UPDATE限定
+        requestUpdate.getIfMatch();
         final ODataEntityUpdateResponse<ClientEntity> responseUpdate = requestUpdate.execute();
 
         if (responseUpdate.getStatusCode() == 204) {
