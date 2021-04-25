@@ -2,28 +2,20 @@ package jp.oiyokan.sitedemo.test;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.olingo.client.api.ODataClient;
-import org.apache.olingo.client.core.ODataClientFactory;
 import org.apache.olingo.commons.api.edm.Edm;
 import org.apache.olingo.commons.api.edm.EdmEntitySet;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
 import org.apache.olingo.commons.api.edm.EdmKeyPropertyRef;
 import org.apache.olingo.commons.api.edm.EdmProperty;
-import org.apache.olingo.commons.api.format.ContentType;
 import org.junit.jupiter.api.Test;
 
-public class ReadEdmEntitySet01Test {
-    private static final Log log = LogFactory.getLog(ReadEdmEntitySet01Test.class);
-
-    public static final ODataClient client = ODataClientFactory.getClient();
-
-    public static final String serviceUrl = "https://oiyokan-devel.herokuapp.com/odata4.svc/";
+public class ReadEdmAll01Test {
+    private static final Log log = LogFactory.getLog(ReadEdmAll01Test.class);
 
     @Test
     void test01() {
-        client.getConfiguration().setDefaultPubFormat(ContentType.APPLICATION_JSON);
-
-        final Edm edm = client.getRetrieveRequestFactory().getMetadataRequest(serviceUrl).execute().getBody();
+        final Edm edm = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
+                .getMetadataRequest(SitedemoTestUtil.serviceUrl).execute().getBody();
         for (EdmEntitySet entitySet : edm.getEntityContainer().getEntitySets()) {
             log.info("EdmEntitySet: " + entitySet.getName());
 
