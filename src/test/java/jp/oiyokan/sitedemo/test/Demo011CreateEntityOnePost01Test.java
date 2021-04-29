@@ -16,7 +16,7 @@ public class Demo011CreateEntityOnePost01Test {
     void test01() {
         // 自動採番にて何度でも動作可能.
         final List<ClientProperty> properties = new ArrayList<>();
-        properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
+        properties.add(SitedemoTestUtil.newPropertyString("Name", "Created Demo011CreateEntityOnePost01Test"));
 
         SitedemoTestUtil.createEntityOne("ODataTest1", properties);
     }

@@ -18,5 +18,7 @@ public class Demo031UpdateEntityOnePatchUpsert01Test {
 
         SitedemoTestUtil.patchUpsertEntryOne("ODataTest7", Integer.valueOf(50201), properties);
         log.info("UPSERT成功");
+
+        // TODO デフォルトは、204ではなくって200で内容返却???
     }
 }

@@ -16,12 +16,14 @@ public class Demo032UpdateEntityOnePatchUpdate01Test {
         final List<ClientProperty> properties = new ArrayList<>();
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
 
-        final boolean isUpdated = SitedemoTestUtil.patchUpdateEntryOne("ODataTest7", Integer.valueOf(50321),
+        final boolean isUpdated = SitedemoTestUtil.patchUpdateEntryOne("ODataTest7", Integer.valueOf(50201),
                 properties);
         if (isUpdated) {
             log.info("patch update success.");
         } else {
             log.warn("patch update fail. no record modified.");
         }
+        // TODO デフォルトは、204ではなくって200で内容返却???
+
     }
 }

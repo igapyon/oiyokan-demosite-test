@@ -24,6 +24,6 @@ public class Demo033UpdateEntityOnePatchInsert01Test {
         } else {
             log.warn("patch insert fail. no record inserted.");
         }
-
+        // TODO デフォルトは、204ではなくって200で内容返却???
     }
 }

@@ -16,11 +16,14 @@ public class Demo012CreateEntityOnePost02Test {
     void test01() {
         // 一度動作させると以降はエラー.
         final List<ClientProperty> properties = new ArrayList<>();
-        properties.add(SitedemoTestUtil.newPropertyInt32("ID", 3320));
+        properties.add(SitedemoTestUtil.newPropertyInt32("ID", 3322));
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
 
-        // TODO FIXME 409でほんとにいいのか？400ではないのか？を検討。
-
-        SitedemoTestUtil.createEntityOne("ODataTest7", properties);
+        final boolean isInserted = SitedemoTestUtil.createEntityOne("ODataTest7", properties);
+        if (isInserted) {
+            log.info("insert success.");
+        } else {
+            log.warn("insert fail. no record inserted.");
+        }
     }
 }

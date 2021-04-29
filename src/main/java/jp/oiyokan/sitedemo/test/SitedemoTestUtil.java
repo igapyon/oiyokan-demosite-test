@@ -59,7 +59,7 @@ public class SitedemoTestUtil {
     ////////////////
     // Create
 
-    public static void createEntityOne(String entitySetName, final List<ClientProperty> properties) {
+    public static boolean createEntityOne(String entitySetName, final List<ClientProperty> properties) {
         ClientEntity newEntity = SitedemoTestUtil.getClient().getObjectFactory()
                 .newEntity(new FullQualifiedName("Container", entitySetName));
         for (ClientProperty prop : properties) {
@@ -69,11 +69,20 @@ public class SitedemoTestUtil {
         final ODataEntityCreateRequest<ClientEntity> createRequest = SitedemoTestUtil.getClient().getCUDRequestFactory()
                 .getEntityCreateRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
                         .appendEntitySetSegment(entitySetName).build(), newEntity);
-        final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
-        final ClientEntity createdEntity = createResponse.getBody();
+        try {
+            final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
+            final ClientEntity createdEntity = createResponse.getBody();
 
-        log.info("  " + entitySetName);
-        SitedemoTestUtil.printEntity(createdEntity);
+            log.info("  " + entitySetName);
+            SitedemoTestUtil.printEntity(createdEntity);
+            return true;
+        } catch (ODataClientErrorException ex) {
+            if (ex.getStatusLine().getStatusCode() == 409) {
+                return false;
+            } else {
+                throw ex;
+            }
+        }
     }
 
     /////////////////
