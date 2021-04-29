@@ -4,12 +4,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 
-public class ReadEntityOne01Test {
+public class Demo023ReadEntityOne01Test {
     @SuppressWarnings("unused")
-    private static final Log log = LogFactory.getLog(ReadEntityOne01Test.class);
+    private static final Log log = LogFactory.getLog(Demo023ReadEntityOne01Test.class);
 
     @Test
     void test01() {
-        SitedemoTestUtil.readEntityOne("ODataTests1", Integer.valueOf(1));
+        SitedemoTestUtil.readEntityOne("ODataTest1", Integer.valueOf(1));
     }
 }

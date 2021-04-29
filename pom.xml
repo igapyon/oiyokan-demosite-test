@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>jp.oiyokan</groupId>
-	<artifactId>oiyokan-sitedemo-test</artifactId>
+	<artifactId>oiyokan-demosite-test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>oiyokan-sitedemo-test</name>
+	<name>oiyokan-demosite-test</name>
 	<description>Sitedemo</description>
 	<properties>
 		<java.version>11</java.version>
