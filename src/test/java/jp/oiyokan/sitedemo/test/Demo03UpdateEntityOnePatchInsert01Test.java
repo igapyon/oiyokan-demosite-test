@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientProperty;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +18,9 @@ public class Demo03UpdateEntityOnePatchInsert01Test {
 
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
 
-        final boolean isInserted = SitedemoTestUtil.patchInsertEntryOne("ODataTest7", Integer.valueOf(50111),
+        final ClientEntity entity = SitedemoTestUtil.patchInsertEntryOne("ODataTest7", Integer.valueOf(50111),
                 properties);
-        if (isInserted) {
+        if (entity != null) {
             log.info("patch insert success.");
         } else {
             log.warn("patch insert fail. no record inserted.");
