@@ -242,4 +242,14 @@ public class SitedemoTestUtil {
             throw ex;
         }
     }
+
+    public static ClientProperty newPropertyString(String name, String value) {
+        return getClient().getObjectFactory().newPrimitiveProperty(name,
+                getClient().getObjectFactory().newPrimitiveValueBuilder().buildString(value));
+    }
+
+    public static ClientProperty newPropertyInt32(String name, Integer value) {
+        return getClient().getObjectFactory().newPrimitiveProperty(name,
+                getClient().getObjectFactory().newPrimitiveValueBuilder().buildInt32(value));
+    }
 }

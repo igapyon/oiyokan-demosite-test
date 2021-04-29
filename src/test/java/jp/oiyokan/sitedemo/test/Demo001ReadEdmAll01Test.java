@@ -9,8 +9,8 @@ import org.apache.olingo.commons.api.edm.EdmKeyPropertyRef;
 import org.apache.olingo.commons.api.edm.EdmProperty;
 import org.junit.jupiter.api.Test;
 
-public class ReadEdmAll01Test {
-    private static final Log log = LogFactory.getLog(ReadEdmAll01Test.class);
+public class Demo001ReadEdmAll01Test {
+    private static final Log log = LogFactory.getLog(Demo001ReadEdmAll01Test.class);
 
     @Test
     void test01() {
@@ -28,11 +28,9 @@ public class ReadEdmAll01Test {
             for (String propertyName : entityType.getPropertyNames()) {
                 EdmProperty property = entityType.getStructuralProperty(propertyName);
 
-                log.info("      Property: " + property.getName() + " (" + property.getType() + ")");
-                log.info("          " + property.isNullable());
-
+                log.info("      Property: " + property.getName() + " (" + property.getType() + ")"
+                        + (Boolean.FALSE == property.isNullable() ? " (NOT NULL)" : ""));
             }
-
         }
     }
 }
