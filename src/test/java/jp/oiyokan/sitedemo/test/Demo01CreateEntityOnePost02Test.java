@@ -9,9 +9,9 @@ import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientProperty;
 import org.junit.jupiter.api.Test;
 
-public class Demo012CreateEntityOnePost02Test {
+public class Demo01CreateEntityOnePost02Test {
     @SuppressWarnings("unused")
-    private static final Log log = LogFactory.getLog(Demo012CreateEntityOnePost02Test.class);
+    private static final Log log = LogFactory.getLog(Demo01CreateEntityOnePost02Test.class);
 
     @Test
     void test01() {

@@ -94,7 +94,7 @@ public class SitedemoTestUtil {
     /////////////////
     // Read util
 
-    public static void readEntityOne(String entitySetName, Object keySegment) {
+    public static ClientEntity readEntityOne(String entitySetName, Object keySegment) {
         ODataEntityRequest<ClientEntity> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
                 .getEntityRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                         .appendEntitySetSegment(entitySetName) //
@@ -102,14 +102,31 @@ public class SitedemoTestUtil {
                         .build());
         request.setAccept("application/json;odata.metadata=full");
 
-        final ODataRetrieveResponse<ClientEntity> response = request.execute();
-        final ClientEntity entity = response.getBody();
-        log.info("  EntitySet: " + entitySetName);
-        printEntity(entity);
+        try {
+
+            final ODataRetrieveResponse<ClientEntity> response = request.execute();
+
+            if (200 != response.getStatusCode()) {
+                log.error(
+                        "UNEXPECTED: 200以外の値が返却された: " + response.getStatusCode() + ": " + response.getStatusMessage());
+                return null;
+            }
+
+            final ClientEntity entity = response.getBody();
+            log.info("  EntitySet: " + entitySetName);
+            printEntity(entity);
+            return entity;
+        } catch (ODataClientErrorException ex) {
+            if (404 == ex.getStatusLine().getStatusCode()) {
+                return null;
+            } else {
+                throw ex;
+            }
+        }
     }
 
-    public static void readEntityCollection(String entitySetName, boolean count, String select, String filter,
-            String orderBy, Integer top, Integer skip) {
+    public static ClientEntitySet readEntityCollection(String entitySetName, boolean count, String select,
+            String filter, String orderBy, Integer top, Integer skip) {
         ODataEntitySetRequest<ClientEntitySet> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
                 .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                         .appendEntitySetSegment(entitySetName) //
@@ -123,12 +140,21 @@ public class SitedemoTestUtil {
         request.setAccept("application/json;odata.metadata=full");
 
         final ODataRetrieveResponse<ClientEntitySet> response = request.execute();
+
+        if (200 != response.getStatusCode()) {
+            log.error("UNEXPECTED: 200以外の値が返却された: 結果0件であっても200を戻す: " + response.getStatusCode() + ": "
+                    + response.getStatusMessage());
+            return null;
+        }
+
         final ClientEntitySet entitySet = response.getBody();
         log.info("    count: " + entitySet.getCount());
         for (ClientEntity entity : entitySet.getEntities()) {
             log.info("  " + entitySetName);
             SitedemoTestUtil.printEntity(entity);
         }
+
+        return entitySet;
     }
 
     ///////////////

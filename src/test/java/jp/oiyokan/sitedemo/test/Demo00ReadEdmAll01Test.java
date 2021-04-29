@@ -9,8 +9,8 @@ import org.apache.olingo.commons.api.edm.EdmKeyPropertyRef;
 import org.apache.olingo.commons.api.edm.EdmProperty;
 import org.junit.jupiter.api.Test;
 
-public class Demo001ReadEdmAll01Test {
-    private static final Log log = LogFactory.getLog(Demo001ReadEdmAll01Test.class);
+public class Demo00ReadEdmAll01Test {
+    private static final Log log = LogFactory.getLog(Demo00ReadEdmAll01Test.class);
 
     @Test
     void test01() {
