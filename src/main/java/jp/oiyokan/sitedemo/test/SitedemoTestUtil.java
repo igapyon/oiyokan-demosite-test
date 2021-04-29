@@ -175,10 +175,17 @@ public class SitedemoTestUtil {
         final ODataDeleteRequest request = SitedemoTestUtil.getClient().getCUDRequestFactory().getDeleteRequest(uri);
         try {
             final ODataDeleteResponse response = request.execute();
+
+            if (204 != response.getStatusCode()) {
+                log.error(
+                        "UNEXPECTED: 204以外の値が返却された: " + response.getStatusCode() + ": " + response.getStatusMessage());
+                return false;
+            }
+
             log.info("code:" + response.getStatusCode() + ": " + response.getStatusMessage());
             return true;
         } catch (ODataClientErrorException ex) {
-            if (ex.getStatusLine().getStatusCode() == 404) {
+            if (404 == ex.getStatusLine().getStatusCode()) {
                 return false;
             } else {
                 throw ex;

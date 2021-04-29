@@ -8,8 +8,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.olingo.client.api.domain.ClientProperty;
 import org.junit.jupiter.api.Test;
 
-public class Demo032UpdateEntityOnePatchUpdate01Test {
-    private static final Log log = LogFactory.getLog(Demo032UpdateEntityOnePatchUpdate01Test.class);
+public class Demo03UpdateEntityOnePatchUpdate01Test {
+    private static final Log log = LogFactory.getLog(Demo03UpdateEntityOnePatchUpdate01Test.class);
 
     @Test
     void test01() {
