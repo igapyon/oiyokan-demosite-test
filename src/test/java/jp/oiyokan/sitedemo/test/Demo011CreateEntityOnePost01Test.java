@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientProperty;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,7 @@ public class Demo011CreateEntityOnePost01Test {
         final List<ClientProperty> properties = new ArrayList<>();
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Created Demo011CreateEntityOnePost01Test"));
 
-        SitedemoTestUtil.createEntityOne("ODataTest1", properties);
+        @SuppressWarnings("unused")
+        final ClientEntity entity = SitedemoTestUtil.createEntityOne("ODataTest1", properties);
     }
 }

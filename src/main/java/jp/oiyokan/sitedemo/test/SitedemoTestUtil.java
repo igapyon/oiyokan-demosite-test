@@ -59,7 +59,7 @@ public class SitedemoTestUtil {
     ////////////////
     // Create
 
-    public static boolean createEntityOne(String entitySetName, final List<ClientProperty> properties) {
+    public static ClientEntity createEntityOne(String entitySetName, final List<ClientProperty> properties) {
         ClientEntity newEntity = SitedemoTestUtil.getClient().getObjectFactory()
                 .newEntity(new FullQualifiedName("Container", entitySetName));
         for (ClientProperty prop : properties) {
@@ -71,14 +71,20 @@ public class SitedemoTestUtil {
                         .appendEntitySetSegment(entitySetName).build(), newEntity);
         try {
             final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
+            if (201 != createResponse.getStatusCode()) {
+                log.error("UNEXPECTED: 201以外の値が返却された: " + createResponse.getStatusCode() + ": "
+                        + createResponse.getStatusMessage());
+                return null;
+            }
             final ClientEntity createdEntity = createResponse.getBody();
 
             log.info("  " + entitySetName);
-            SitedemoTestUtil.printEntity(createdEntity);
-            return true;
+            printEntity(createdEntity);
+
+            return createdEntity;
         } catch (ODataClientErrorException ex) {
             if (ex.getStatusLine().getStatusCode() == 409) {
-                return false;
+                return null;
             } else {
                 throw ex;
             }
