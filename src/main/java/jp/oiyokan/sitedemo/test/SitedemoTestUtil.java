@@ -230,7 +230,11 @@ public class SitedemoTestUtil {
             SitedemoTestUtil.printEntity(entityInserted);
             return entityInserted;
         } catch (ODataClientErrorException ex) {
-            throw ex;
+            if (409 == ex.getStatusLine().getStatusCode()) {
+                return null;
+            } else {
+                throw ex;
+            }
         }
     }
 
@@ -297,7 +301,7 @@ public class SitedemoTestUtil {
         try {
             final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
             if (200 != response.getStatusCode() //
-                    && 204 != response.getStatusCode()) {
+                    && 201 != response.getStatusCode()) {
                 log.error("UNEXPECTED: 200でも201でもない値が返却された: " + response.getStatusCode() + ": "
                         + response.getStatusMessage());
                 return null;
