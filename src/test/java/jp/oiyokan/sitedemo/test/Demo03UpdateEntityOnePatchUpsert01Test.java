@@ -5,23 +5,24 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientProperty;
 import org.junit.jupiter.api.Test;
 
-public class Demo032UpdateEntityOnePatchUpdate01Test {
-    private static final Log log = LogFactory.getLog(Demo032UpdateEntityOnePatchUpdate01Test.class);
+public class Demo03UpdateEntityOnePatchUpsert01Test {
+    private static final Log log = LogFactory.getLog(Demo03UpdateEntityOnePatchUpsert01Test.class);
 
     @Test
     void test01() {
         final List<ClientProperty> properties = new ArrayList<>();
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
 
-        final boolean isUpdated = SitedemoTestUtil.patchUpdateEntryOne("ODataTest7", Integer.valueOf(50321),
+        final ClientEntity entity = SitedemoTestUtil.patchUpsertEntryOne("ODataTest7", Integer.valueOf(50201),
                 properties);
-        if (isUpdated) {
-            log.info("patch update success.");
+        if (entity != null) {
+            log.info("UPSERT成功");
         } else {
-            log.warn("patch update fail. no record modified.");
+            log.error("UPSERT失敗");
         }
     }
 }

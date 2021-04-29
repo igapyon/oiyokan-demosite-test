@@ -59,7 +59,7 @@ public class SitedemoTestUtil {
     ////////////////
     // Create
 
-    public static void createEntityOne(String entitySetName, final List<ClientProperty> properties) {
+    public static ClientEntity createEntityOne(String entitySetName, final List<ClientProperty> properties) {
         ClientEntity newEntity = SitedemoTestUtil.getClient().getObjectFactory()
                 .newEntity(new FullQualifiedName("Container", entitySetName));
         for (ClientProperty prop : properties) {
@@ -69,17 +69,32 @@ public class SitedemoTestUtil {
         final ODataEntityCreateRequest<ClientEntity> createRequest = SitedemoTestUtil.getClient().getCUDRequestFactory()
                 .getEntityCreateRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl())
                         .appendEntitySetSegment(entitySetName).build(), newEntity);
-        final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
-        final ClientEntity createdEntity = createResponse.getBody();
+        try {
+            final ODataEntityCreateResponse<ClientEntity> createResponse = createRequest.execute();
+            if (201 != createResponse.getStatusCode()) {
+                log.error("UNEXPECTED: 201以外の値が返却された: " + createResponse.getStatusCode() + ": "
+                        + createResponse.getStatusMessage());
+                return null;
+            }
+            final ClientEntity createdEntity = createResponse.getBody();
 
-        log.info("  " + entitySetName);
-        SitedemoTestUtil.printEntity(createdEntity);
+            log.info("  " + entitySetName);
+            printEntity(createdEntity);
+
+            return createdEntity;
+        } catch (ODataClientErrorException ex) {
+            if (ex.getStatusLine().getStatusCode() == 409) {
+                return null;
+            } else {
+                throw ex;
+            }
+        }
     }
 
     /////////////////
     // Read util
 
-    public static void readEntityOne(String entitySetName, Object keySegment) {
+    public static ClientEntity readEntityOne(String entitySetName, Object keySegment) {
         ODataEntityRequest<ClientEntity> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
                 .getEntityRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                         .appendEntitySetSegment(entitySetName) //
@@ -87,14 +102,31 @@ public class SitedemoTestUtil {
                         .build());
         request.setAccept("application/json;odata.metadata=full");
 
-        final ODataRetrieveResponse<ClientEntity> response = request.execute();
-        final ClientEntity entity = response.getBody();
-        log.info("  EntitySet: " + entitySetName);
-        printEntity(entity);
+        try {
+
+            final ODataRetrieveResponse<ClientEntity> response = request.execute();
+
+            if (200 != response.getStatusCode()) {
+                log.error(
+                        "UNEXPECTED: 200以外の値が返却された: " + response.getStatusCode() + ": " + response.getStatusMessage());
+                return null;
+            }
+
+            final ClientEntity entity = response.getBody();
+            log.info("  EntitySet: " + entitySetName);
+            printEntity(entity);
+            return entity;
+        } catch (ODataClientErrorException ex) {
+            if (404 == ex.getStatusLine().getStatusCode()) {
+                return null;
+            } else {
+                throw ex;
+            }
+        }
     }
 
-    public static void readEntityCollection(String entitySetName, boolean count, String select, String filter,
-            String orderBy, Integer top, Integer skip) {
+    public static ClientEntitySet readEntityCollection(String entitySetName, boolean count, String select,
+            String filter, String orderBy, Integer top, Integer skip) {
         ODataEntitySetRequest<ClientEntitySet> request = SitedemoTestUtil.getClient().getRetrieveRequestFactory()
                 .getEntitySetRequest(SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                         .appendEntitySetSegment(entitySetName) //
@@ -108,12 +140,21 @@ public class SitedemoTestUtil {
         request.setAccept("application/json;odata.metadata=full");
 
         final ODataRetrieveResponse<ClientEntitySet> response = request.execute();
+
+        if (200 != response.getStatusCode()) {
+            log.error("UNEXPECTED: 200以外の値が返却された: 結果0件であっても200を戻す: " + response.getStatusCode() + ": "
+                    + response.getStatusMessage());
+            return null;
+        }
+
         final ClientEntitySet entitySet = response.getBody();
         log.info("    count: " + entitySet.getCount());
         for (ClientEntity entity : entitySet.getEntities()) {
             log.info("  " + entitySetName);
             SitedemoTestUtil.printEntity(entity);
         }
+
+        return entitySet;
     }
 
     ///////////////
@@ -134,10 +175,17 @@ public class SitedemoTestUtil {
         final ODataDeleteRequest request = SitedemoTestUtil.getClient().getCUDRequestFactory().getDeleteRequest(uri);
         try {
             final ODataDeleteResponse response = request.execute();
+
+            if (204 != response.getStatusCode()) {
+                log.error(
+                        "UNEXPECTED: 204以外の値が返却された: " + response.getStatusCode() + ": " + response.getStatusMessage());
+                return false;
+            }
+
             log.info("code:" + response.getStatusCode() + ": " + response.getStatusMessage());
             return true;
         } catch (ODataClientErrorException ex) {
-            if (ex.getStatusLine().getStatusCode() == 404) {
+            if (404 == ex.getStatusLine().getStatusCode()) {
                 return false;
             } else {
                 throw ex;
@@ -151,7 +199,7 @@ public class SitedemoTestUtil {
     //////////////////
     // PATCH - INSERT
 
-    public static boolean patchInsertEntryOne(String entitySetName, Object keySegment,
+    public static ClientEntity patchInsertEntryOne(String entitySetName, Object keySegment,
             List<ClientProperty> properties) {
         final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                 .appendEntitySetSegment(entitySetName) //
@@ -170,11 +218,17 @@ public class SitedemoTestUtil {
         request.setIfNoneMatch("*");
         try {
             final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
-            if (response.getStatusCode() == 304) {
-                return false;
-            } else {
-                return true;
+
+            if (201 != response.getStatusCode()) {
+                log.error(
+                        "UNEXPECTED: 201以外の値が返却された: " + response.getStatusCode() + ": " + response.getStatusMessage());
+                return null;
             }
+
+            final ClientEntity entityInserted = response.getBody();
+            log.info("  " + entitySetName);
+            SitedemoTestUtil.printEntity(entityInserted);
+            return entityInserted;
         } catch (ODataClientErrorException ex) {
             throw ex;
         }
@@ -183,7 +237,7 @@ public class SitedemoTestUtil {
     //////////////////
     // PATCH - UPDATE
 
-    public static boolean patchUpdateEntryOne(String entitySetName, Object keySegment,
+    public static ClientEntity patchUpdateEntryOne(String entitySetName, Object keySegment,
             List<ClientProperty> properties) {
         final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                 .appendEntitySetSegment(entitySetName) //
@@ -202,20 +256,29 @@ public class SitedemoTestUtil {
         request.setIfMatch("*");
         try {
             final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
-            if (response.getStatusCode() == 304) {
-                return false;
-            } else {
-                return true;
+            if (200 != response.getStatusCode()) {
+                log.error(
+                        "UNEXPECTED: 200以外の値が返却された: " + response.getStatusCode() + ": " + response.getStatusMessage());
+                return null;
             }
+
+            final ClientEntity entityUpdated = response.getBody();
+            log.info("  " + entitySetName);
+            SitedemoTestUtil.printEntity(entityUpdated);
+            return entityUpdated;
         } catch (ODataClientErrorException ex) {
-            throw ex;
+            if (404 == ex.getStatusLine().getStatusCode()) {
+                return null;
+            } else {
+                throw ex;
+            }
         }
     }
 
     //////////////////
     // PATCH - UPSERT
 
-    public static boolean patchUpsertEntryOne(String entitySetName, Object keySegment,
+    public static ClientEntity patchUpsertEntryOne(String entitySetName, Object keySegment,
             List<ClientProperty> properties) {
         final URI uri = SitedemoTestUtil.getClient().newURIBuilder(SitedemoTestUtil.getServiceUrl()) //
                 .appendEntitySetSegment(entitySetName) //
@@ -233,11 +296,17 @@ public class SitedemoTestUtil {
         // UPSERT (UPDATE or INSERT)
         try {
             final ODataEntityUpdateResponse<ClientEntity> response = request.execute();
-            if (response.getStatusCode() == 304) {
-                return false;
-            } else {
-                return true;
+            if (200 != response.getStatusCode() //
+                    && 204 != response.getStatusCode()) {
+                log.error("UNEXPECTED: 200でも201でもない値が返却された: " + response.getStatusCode() + ": "
+                        + response.getStatusMessage());
+                return null;
             }
+
+            final ClientEntity entityUpserted = response.getBody();
+            log.info("  " + entitySetName);
+            SitedemoTestUtil.printEntity(entityUpserted);
+            return entityUpserted;
         } catch (ODataClientErrorException ex) {
             throw ex;
         }
