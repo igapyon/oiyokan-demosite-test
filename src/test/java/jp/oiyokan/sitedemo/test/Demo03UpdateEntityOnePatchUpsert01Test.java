@@ -15,9 +15,9 @@ public class Demo03UpdateEntityOnePatchUpsert01Test {
     @Test
     void test01() {
         final List<ClientProperty> properties = new ArrayList<>();
-        properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
+        properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated NewVAL"));
 
-        final ClientEntity entity = SitedemoTestUtil.patchUpsertEntryOne("ODataTest7", Integer.valueOf(502011),
+        final ClientEntity entity = SitedemoTestUtil.patchUpsertEntryOne("ODataTest7", Integer.valueOf(50203),
                 properties);
         if (entity != null) {
             log.info("UPSERT成功");

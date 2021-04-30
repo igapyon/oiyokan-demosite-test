@@ -17,8 +17,7 @@ public class Demo03UpdateEntityOnePatchUpdate01Test {
         final List<ClientProperty> properties = new ArrayList<>();
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
 
-        // TODO FIXME 204ではなく200を戻して欲しい。
-        final ClientEntity entity = SitedemoTestUtil.patchUpdateEntryOne("ODataTest7", Integer.valueOf(501113),
+        final ClientEntity entity = SitedemoTestUtil.patchUpdateEntryOne("ODataTest7", Integer.valueOf(50114),
                 properties);
         if (entity != null) {
             log.info("patch update success.");

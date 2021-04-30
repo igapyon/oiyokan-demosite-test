@@ -19,11 +19,12 @@ public class Demo03UpdateEntityOnePatchInsert01Test {
         properties.add(SitedemoTestUtil.newPropertyString("Name", "Updated valu555"));
 
         // TODO FIXME 204ではなく201を戻して欲しい。
-        final ClientEntity entity = SitedemoTestUtil.patchInsertEntryOne("ODataTest7", Integer.valueOf(501113),
+        final ClientEntity entity = SitedemoTestUtil.patchInsertEntryOne("ODataTest7", Integer.valueOf(50114),
                 properties);
         if (entity != null) {
             log.info("patch insert success.");
         } else {
+            // 失敗コースは 409
             log.warn("patch insert fail. no record inserted.");
         }
     }
