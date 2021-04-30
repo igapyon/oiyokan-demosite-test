@@ -9,7 +9,7 @@ public class Demo04DeleteEntityOneDelete01Test {
 
     @Test
     void test01() {
-        final boolean isDeleted = SitedemoTestUtil.deleteEntryOne("ODataTest7", Integer.valueOf(50111));
+        final boolean isDeleted = SitedemoTestUtil.deleteEntryOne("ODataTest7", Integer.valueOf(50203));
         if (isDeleted) {
             log.info("delete success.");
         } else {
