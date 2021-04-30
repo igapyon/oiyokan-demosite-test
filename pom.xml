@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>jp.oiyokan</groupId>
 	<artifactId>oiyokan-demosite-test</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.10.20210430g</version>
 	<name>oiyokan-demosite-test</name>
 	<description>Sitedemo</description>
 	<properties>

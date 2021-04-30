@@ -40,8 +40,8 @@ public class SitedemoTestUtil {
         if (client == null) {
             log.info("Start client instance:" + getServiceUrl());
             client = ODataClientFactory.getClient();
+            client.getConfiguration().setDefaultPubFormat(ContentType.APPLICATION_JSON);
         }
-        client.getConfiguration().setDefaultPubFormat(ContentType.APPLICATION_JSON);
 
         return client;
     }
